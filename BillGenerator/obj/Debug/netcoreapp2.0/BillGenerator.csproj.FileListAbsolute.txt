@@ -1,0 +1,9 @@
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\bin\Debug\netcoreapp2.0\BillGenerator.deps.json
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\bin\Debug\netcoreapp2.0\BillGenerator.dll
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\bin\Debug\netcoreapp2.0\BillGenerator.pdb
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.csprojResolveAssemblyReference.cache
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.csproj.CoreCompileInputs.cache
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.AssemblyInfoInputs.cache
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.AssemblyInfo.cs
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.dll
+c:\users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.pdb

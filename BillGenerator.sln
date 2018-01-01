@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillGenerator", "BillGenerator\BillGenerator.csproj", "{0FAB20FB-EE37-4669-B00E-394053578E58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillGenerator.Tests", "BillGenerator.Tests\BillGenerator.Tests.csproj", "{18EA255A-756D-4F71-A5C4-0173A622C2C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0FAB20FB-EE37-4669-B00E-394053578E58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FAB20FB-EE37-4669-B00E-394053578E58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FAB20FB-EE37-4669-B00E-394053578E58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FAB20FB-EE37-4669-B00E-394053578E58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18EA255A-756D-4F71-A5C4-0173A622C2C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18EA255A-756D-4F71-A5C4-0173A622C2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18EA255A-756D-4F71-A5C4-0173A622C2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18EA255A-756D-4F71-A5C4-0173A622C2C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E144C9C2-B90F-466F-98BC-CE057F2C1537}
+	EndGlobalSection
+EndGlobal
