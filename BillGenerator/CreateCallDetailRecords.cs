@@ -8,7 +8,8 @@ namespace BillGenerator
     {
         private TimeSpan peakStartingTime = new TimeSpan(8, 0, 0);
         private TimeSpan peakEndingTime = new TimeSpan(20, 0, 0);
-        private List<ListOfCallDetails> callDetailsForCallersNumber = new List<ListOfCallDetails>();
+        private List<ListOfCallDetails> listOfCallDetailsForPerMinutePackages = new List<ListOfCallDetails>();
+        private List<ListOfCallDetails> listOfCallDetailsForPerSecondPackages = new List<ListOfCallDetails>();
 
         public List<int> GetCallDurations(string filePath)
         {
@@ -26,9 +27,9 @@ namespace BillGenerator
             return callDurations;
         }
 
-        public List<CallDetailRecords> GetCallDetailRecordsObjects()
+        public List<CallDetailRecords> GetCallDetailRecords()
         {
-            var callDetailRecordsObjects = new List<CallDetailRecords>();
+            var callDetailRecords = new List<CallDetailRecords>();
             string fileName = "CDR.csv";
             using (var reader = new StreamReader(fileName))
             {
@@ -40,16 +41,16 @@ namespace BillGenerator
                     String[] tokens = line.Split(',');
                     DateTime.TryParse(tokens[2], out DateTime dateAndTime);
 
-                    CallDetailRecords callDetailRecords = new CallDetailRecords
+                    CallDetailRecords callDetailRecord = new CallDetailRecords
                     {
                         phoneNumberOfCallingParty = tokens[0],
                         phoneNumberOfCalledParty = tokens[1],
                         startingTimeOfTheCall = dateAndTime,
                         callDuaration = int.Parse(tokens[3])
                     };
-                    callDetailRecordsObjects.Add(callDetailRecords);
+                    callDetailRecords.Add(callDetailRecord);
                 }
-                return callDetailRecordsObjects;
+                return callDetailRecords;
             }
             
         }
@@ -97,7 +98,7 @@ namespace BillGenerator
             return false;
         }
 
-        public double CalculateTotalCharge(string callersPhoneNumber, List<CallDetailRecords> callDetailRecords)
+        public double CalculateTotalChargePerMinute(string callersPhoneNumber, List<CallDetailRecords> callDetailRecords)
         {
             int perMinuteCharge = 0;
             double totalCharge = 0;
@@ -144,7 +145,86 @@ namespace BillGenerator
                     destinationNumber = cdr.phoneNumberOfCalledParty,
                     charge = callCharge
                 };
-                callDetailsForCallersNumber.Add(listOfCallDetails);
+                listOfCallDetailsForPerMinutePackages.Add(listOfCallDetails);
+            }
+            return totalCharge;
+        }
+
+        public double CalculateTotalChargePerSecond(string callersPhoneNumber, List<CallDetailRecords> callDetailRecords)
+        {
+            int perMinuteCharge = 0;
+            double totalCharge = 0;
+
+            foreach (CallDetailRecords cdr in callDetailRecords)
+            {
+                double callCharge = 0;
+                bool isLocalCall = IsLocalCall(cdr.phoneNumberOfCallingParty, cdr.phoneNumberOfCalledParty);
+                double minutesPortionInTheCall = cdr.callDuaration / 60;
+                double secondsPortionInTheCall = cdr.callDuaration % 60;
+                double secondsPortionInTheCallInTermOfMinutes = (cdr.callDuaration % 60) / 60.0;
+
+                for (int i = 0; i < minutesPortionInTheCall; i++)
+                {
+                    if (cdr.startingTimeOfTheCall.TimeOfDay >= peakStartingTime && cdr.startingTimeOfTheCall.TimeOfDay < peakEndingTime)
+                    {
+                        if (isLocalCall)
+                        {
+                            perMinuteCharge = 4;
+                        }
+                        else
+                        {
+                            perMinuteCharge = 6;
+                        }
+                    }
+                    else
+                    {
+                        if (isLocalCall)
+                        {
+                            perMinuteCharge = 3;
+                        }
+                        else
+                        {
+                            perMinuteCharge = 5;
+                        }
+                    }
+                    callCharge = callCharge + perMinuteCharge;
+                    totalCharge = totalCharge + perMinuteCharge;
+                    cdr.startingTimeOfTheCall = cdr.startingTimeOfTheCall.AddMinutes(1);
+                }
+                if (cdr.startingTimeOfTheCall.TimeOfDay >= peakStartingTime && cdr.startingTimeOfTheCall.TimeOfDay < peakEndingTime)
+                {
+                    if (isLocalCall)
+                    {
+                        perMinuteCharge = 4;
+                    }
+                    else
+                    {
+                        perMinuteCharge = 6;
+                    }
+                }
+                else
+                {
+                    if (isLocalCall)
+                    {
+                        perMinuteCharge = 3;
+                    }
+                    else
+                    {
+                        perMinuteCharge = 5;
+                    }
+                }
+                callCharge = callCharge + perMinuteCharge * secondsPortionInTheCallInTermOfMinutes;
+                totalCharge = totalCharge + perMinuteCharge * secondsPortionInTheCallInTermOfMinutes;
+                DateTime callEndTime = cdr.startingTimeOfTheCall.AddSeconds(secondsPortionInTheCall);
+
+                ListOfCallDetails listOfCallDetails = new ListOfCallDetails
+                {
+                    startTime = cdr.startingTimeOfTheCall,
+                    durationInSeconds = cdr.callDuaration,
+                    destinationNumber = cdr.phoneNumberOfCalledParty,
+                    charge = callCharge
+                };
+                listOfCallDetailsForPerSecondPackages.Add(listOfCallDetails);
             }
             return totalCharge;
         }
@@ -154,10 +234,10 @@ namespace BillGenerator
             CreateCustomer customer = new CreateCustomer();
             Customer customerDetails = customer.GetCustomerDetailsForPhoneNumber(callersPhoneNumber);
             List<CallDetailRecords> callDetailRecords = GetCallRecords(callersPhoneNumber);
-            double totalCallCharges = CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            double totalCallCharges = CalculateTotalChargePerMinute(callersPhoneNumber, callDetailRecords);
             double monthlyRental = 100.0;
             double disCount = 0.0;
-            double tax = (monthlyRental + totalCallCharges) * (20.0 / 100);
+            double tax = (monthlyRental + totalCallCharges) * (20 / 100.0);
             double billAmount = totalCallCharges + monthlyRental + tax - disCount;
 
             Bill billReport = new Bill
@@ -170,7 +250,7 @@ namespace BillGenerator
                 tax = tax,
                 monthlyRental = monthlyRental,
                 billAmount = billAmount,
-                listOfCallRecords = callDetailsForCallersNumber
+                listOfCallRecords = listOfCallDetailsForPerMinutePackages
             };
             return billReport;
         }

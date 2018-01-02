@@ -22,9 +22,9 @@ namespace BillGenerator
             return fullNames;
         }
 
-        public List<Customer> CreateCustomerObjects()
+        public List<Customer> CreateCustomers()
         {
-            var customerObjects = new List<Customer>();
+            var customers = new List<Customer>();
             string fileName = "customerDetails.csv";
             using (var reader = new StreamReader(fileName))
             {
@@ -45,9 +45,9 @@ namespace BillGenerator
                         packageCode = int.Parse(tokens[3]),
                         registeredDate = dateAndTime
                     };
-                    customerObjects.Add(customer);
+                    customers.Add(customer);
                 }
-                return customerObjects;
+                return customers;
             }
         }
 

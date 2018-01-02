@@ -20,7 +20,7 @@ namespace BillGenerator.Tests
         {
             //Arrange
             string filePath = "CDR.csv";
-            List<int> expected = new List<int> {350, 245, 490, 1530, 156, 567, 193, 234, 123, 145, 359, 45, 489, 378};
+            List<int> expected = new List<int> { 350, 245, 490, 1530, 156, 567, 193, 234, 123, 145, 359, 45, 489, 378 };
 
             //Act
             var actual = _sut.GetCallDurations(filePath);
@@ -30,7 +30,7 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnGetCallDetailRecordsObjects_WhenInputCallDetailRecordsObjectValues_ShouldReturnSameValuesOfTheCorrespondingObject()
+        public void OnGetCallDetailRecords_WhenInputCallDetailRecordsObjectValues_ShouldReturnSameValuesOfTheCorrespondingObject()
         {
             //Arrange
             List<CallDetailRecords> expected = new List<CallDetailRecords>();
@@ -66,7 +66,7 @@ namespace BillGenerator.Tests
             expected.Add(callDetailRecords3);
 
             //Act
-            var actual = _sut.GetCallDetailRecordsObjects();
+            var actual = _sut.GetCallDetailRecords();
 
             //Assert
             Assert.AreEqual(expected[1].phoneNumberOfCallingParty, actual[1].phoneNumberOfCallingParty);
@@ -132,7 +132,7 @@ namespace BillGenerator.Tests
             Assert.AreEqual(expected[1].callDuaration, actual[1].callDuaration);
             Assert.AreEqual(expected[2].callDuaration, actual[2].callDuaration);
         }
-        
+
         [Test]
         public void OnIsLongDistanceCall_WhenInputTwoPhoneNumbersWithSameExtension_ShoudReturnTrue()
         {
@@ -174,14 +174,14 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnCalculateTotalCharge_WhenInputCallerNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
+        public void OnCalculateTotalChargePerMinute_WhenInputCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
         {
             //Arrange
             string callersPhoneNumber = "0775678765";
             List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
 
             //Act
-            double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            double expectedTotalCharge = _sut.CalculateTotalChargePerMinute(callersPhoneNumber, callDetailRecords);
             double actualTotalCharge = 49.0;
 
             //Assert
@@ -189,18 +189,33 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnCalculateTotalCharge_WhenInputCallerNumberAndCallDetailRecordsListWithCallTimeBetweenPeakAndOffPeakHours_ShouldReturnCorrectTotalCharge()
+        public void OnCalculateTotalChargePerMinute_WhenInputCallersNumberAndCallDetailRecordsListWithCallTimeBetweenPeakAndOffPeakHours_ShouldReturnCorrectTotalCharge()
         {
             //Arrange
             string callersPhoneNumber = "0719633911";
             List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
 
             //Act
-            double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            double expectedTotalCharge = _sut.CalculateTotalChargePerMinute(callersPhoneNumber, callDetailRecords);
             double actualTotalCharge = 127.0;
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
+        public void OnCalculateTotalChargePerSecond_WhenInputCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0775678765";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectdTotalCharge = _sut.CalculateTotalChargePerSecond(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 59.30;
+
+            //Assert
+            Assert.AreEqual(expectdTotalCharge, actualTotalCharge);
         }
 
         [Test]

@@ -31,7 +31,7 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnGetCustomerObjects_WhenInputCustomerObjectValues_ShouldReturnSameValuesOfTheCorrespondingObject()
+        public void OnGetCustomers_WhenInputCustomerObjectValues_ShouldReturnSameValuesOfTheCorrespondingObject()
         {
             //Arrange
             List<Customer> expected = new List<Customer>();
@@ -73,7 +73,7 @@ namespace BillGenerator.Tests
             expected.Add(customer3);
             
             //Act
-            var actual = _sut.CreateCustomerObjects();
+            var actual = _sut.CreateCustomers();
 
             //Assert
             Assert.AreEqual(expected[0].fullName, actual[0].fullName);
