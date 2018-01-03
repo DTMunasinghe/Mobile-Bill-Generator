@@ -109,5 +109,19 @@ namespace BillGenerator.Tests
             Assert.AreEqual(customerDetailsForPhoneNumber.packageCode, actual.packageCode);
             Assert.AreEqual(customerDetailsForPhoneNumber.registeredDate, actual.registeredDate);
         }
+
+        [Test]
+        public void OnGetPackageCode_WhenInputCustomerPhoneNumber_ShouldReturnPackageNumber()
+        {
+            //Arrange
+            string customersPhoneNumber = "0775678765";
+            int actualPackageCode = 1;
+
+            //Act
+            int expectedPackageCode = _sut.GetPackageCode(customersPhoneNumber);
+
+            //Assert
+            Assert.AreEqual(expectedPackageCode, actualPackageCode);
+        }
     }
 }

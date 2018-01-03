@@ -87,5 +87,13 @@ namespace BillGenerator
             }
             return null;
         }
+
+        public int GetPackageCode(string customersPhoneNumber)
+        {
+            Customer customerDetails = GetCustomerDetailsForPhoneNumber(customersPhoneNumber);
+            int packageCode = customerDetails.packageCode;
+
+            return packageCode;
+        }
     }
 }

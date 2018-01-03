@@ -102,7 +102,6 @@ namespace BillGenerator
         {
             int perMinuteCharge = 0;
             double totalCharge = 0;
-            
             foreach (CallDetailRecords cdr in callDetailRecords)
             {
                 double callCharge = 0;
@@ -153,7 +152,6 @@ namespace BillGenerator
         public double CalculateTotalChargePerSecond(string callersPhoneNumber, List<CallDetailRecords> callDetailRecords)
         {
             double totalCharge = 0;
-
             foreach (CallDetailRecords cdr in callDetailRecords)
             {
                 double callCharge = 0;
@@ -262,6 +260,24 @@ namespace BillGenerator
                 listOfCallRecords = listOfCallDetailsForPerMinutePackages
             };
             return billReport;
+        }
+
+        public double CalculateTotalCharge(string customersNumber, List<CallDetailRecords> callDetailRecords)
+        {
+            double totalCharge = 0;
+            CreateCustomer createCustomer = new CreateCustomer();
+
+            int packageCode = createCustomer.GetPackageCode(customersNumber);
+
+            if (packageCode == 1)
+            {
+                totalCharge = CalculateTotalChargePerMinute(customersNumber, callDetailRecords);
+            }
+            else
+            {
+                totalCharge = CalculateTotalChargePerSecond(customersNumber, callDetailRecords);
+            }
+            return totalCharge;
         }
     }
 }

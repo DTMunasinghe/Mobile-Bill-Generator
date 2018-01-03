@@ -234,6 +234,21 @@ namespace BillGenerator.Tests
         }
 
         [Test]
+        public void OnCalculateTotalCharge_WhenInputCustomersNumberAndCallDetailRecords_ShouldReturnTotalChargeAccordingToTheCustomersPackage()
+        {
+            //Arrange
+            string customersNumber = "0729622911";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(customersNumber);
+
+            //Act
+            double expectedTotalCharge = _sut.CalculateTotalCharge(customersNumber, callDetailRecords);
+            double actualTotalCharge = 175.27;
+
+            //Assert
+            Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
         public void OnGenerateMonthlyBill_WhenInputCustomersPhoneNumber_ShouldReturnMonthlyBillReport()
         {
             //Arrange
