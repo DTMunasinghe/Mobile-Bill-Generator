@@ -1,7 +1,3 @@
-C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.csprojResolveAssemblyReference.cache
-C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.csproj.CoreCompileInputs.cache
-C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.AssemblyInfoInputs.cache
-C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.AssemblyInfo.cs
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\bin\Debug\netcoreapp2.0\NUnit3.TestAdapter.dll
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\bin\Debug\netcoreapp2.0\nunit.engine.netstandard.dll
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\bin\Debug\netcoreapp2.0\Mono.Cecil.dll
@@ -15,5 +11,9 @@ C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\bin\Debug\netcoreapp
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\bin\Debug\netcoreapp2.0\BillGenerator.Tests.pdb
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\bin\Debug\netcoreapp2.0\BillGenerator.dll
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\bin\Debug\netcoreapp2.0\BillGenerator.pdb
+C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.csprojResolveAssemblyReference.cache
+C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.csproj.CoreCompileInputs.cache
+C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.AssemblyInfoInputs.cache
+C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.AssemblyInfo.cs
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.dll
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator.Tests\obj\Debug\netcoreapp2.0\BillGenerator.Tests.pdb

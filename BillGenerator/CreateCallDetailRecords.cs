@@ -152,85 +152,93 @@ namespace BillGenerator
 
         public double CalculateTotalChargePerSecond(string callersPhoneNumber, List<CallDetailRecords> callDetailRecords)
         {
-            int perMinuteCharge = 0;
             double totalCharge = 0;
 
             foreach (CallDetailRecords cdr in callDetailRecords)
             {
                 double callCharge = 0;
+                double peakTimeCharge = 0;
+                double offPeakTimeCharge = 0;
                 bool isLocalCall = IsLocalCall(cdr.phoneNumberOfCallingParty, cdr.phoneNumberOfCalledParty);
-                double minutesPortionInTheCall = cdr.callDuaration / 60;
-                double secondsPortionInTheCall = cdr.callDuaration % 60;
-                double secondsPortionInTheCallInTermOfMinutes = (cdr.callDuaration % 60) / 60.0;
+                TimeSpan callStartTime = cdr.startingTimeOfTheCall.TimeOfDay;
+                TimeSpan callEndTime = callStartTime.Add(TimeSpan.FromSeconds(cdr.callDuaration));
+                double callDurationInMinutes = cdr.callDuaration / 60.0;
 
-                for (int i = 0; i < minutesPortionInTheCall; i++)
+                //peak time
+                if (callStartTime >= peakStartingTime && callEndTime < peakEndingTime)
                 {
-                    if (cdr.startingTimeOfTheCall.TimeOfDay >= peakStartingTime && cdr.startingTimeOfTheCall.TimeOfDay < peakEndingTime)
-                    {
-                        if (isLocalCall)
-                        {
-                            perMinuteCharge = 4;
-                        }
-                        else
-                        {
-                            perMinuteCharge = 6;
-                        }
+                    //local call 
+                    if (isLocalCall)
+                    { 
+                        callCharge = callDurationInMinutes * 4;
                     }
                     else
                     {
-                        if (isLocalCall)
-                        {
-                            perMinuteCharge = 3;
-                        }
-                        else
-                        {
-                            perMinuteCharge = 5;
-                        }
+                        callCharge = callDurationInMinutes * 6;
                     }
-                    callCharge = callCharge + perMinuteCharge;
-                    totalCharge = totalCharge + perMinuteCharge;
-                    cdr.startingTimeOfTheCall = cdr.startingTimeOfTheCall.AddMinutes(1);
+                    totalCharge = totalCharge + callCharge;
                 }
-                if (cdr.startingTimeOfTheCall.TimeOfDay >= peakStartingTime && cdr.startingTimeOfTheCall.TimeOfDay < peakEndingTime)
+                //off peak time
+                else if ((callStartTime >= peakEndingTime && callEndTime < peakStartingTime) || (callStartTime < peakStartingTime && callEndTime < peakStartingTime) || 
+                        (callStartTime >= peakEndingTime && callEndTime > peakEndingTime))
                 {
                     if (isLocalCall)
                     {
-                        perMinuteCharge = 4;
+                        callCharge = callDurationInMinutes * 3;
                     }
                     else
                     {
-                        perMinuteCharge = 6;
+                        callCharge = callDurationInMinutes * 5.0;
                     }
+                    totalCharge = totalCharge + callCharge;
                 }
+                //call start at peak time and call end at off peak time
+                else if ((callStartTime >= peakStartingTime && callStartTime < peakEndingTime) && (callEndTime >= peakEndingTime && callEndTime < peakStartingTime))
+                {
+                    TimeSpan callTimeInPeakTime = peakEndingTime - callStartTime;
+                    TimeSpan callTimeInOffPeakTime = callEndTime - peakEndingTime;
+                    
+                    if (isLocalCall)
+                    {
+                        peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * 4.0;
+                        offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * 3.0;
+                        callCharge = peakTimeCharge + offPeakTimeCharge;
+                    }
+                    else
+                    {
+                        peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * 6.0;
+                        offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * 5.0;
+                        callCharge = peakTimeCharge + offPeakTimeCharge;
+                    }
+                    totalCharge = totalCharge + callCharge;
+                }
+                //call start at off peak time and call end at peak time
                 else
                 {
+                    TimeSpan callTimeInOffPeakTime = peakStartingTime - callStartTime;
+                    TimeSpan callTimeInPeakTime = callEndTime - peakStartingTime;
+
                     if (isLocalCall)
                     {
-                        perMinuteCharge = 3;
+                        offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * 3;
+                        peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * 4;
+                        callCharge = offPeakTimeCharge + peakTimeCharge;
                     }
                     else
                     {
-                        perMinuteCharge = 5;
+                        offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * 5;
+                        peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * 6;
+                        callCharge = offPeakTimeCharge + peakTimeCharge;
                     }
+                    totalCharge = totalCharge + callCharge;
                 }
-                callCharge = callCharge + perMinuteCharge * secondsPortionInTheCallInTermOfMinutes;
-                totalCharge = totalCharge + perMinuteCharge * secondsPortionInTheCallInTermOfMinutes;
-                DateTime callEndTime = cdr.startingTimeOfTheCall.AddSeconds(secondsPortionInTheCall);
-
-                ListOfCallDetails listOfCallDetails = new ListOfCallDetails
-                {
-                    startTime = cdr.startingTimeOfTheCall,
-                    durationInSeconds = cdr.callDuaration,
-                    destinationNumber = cdr.phoneNumberOfCalledParty,
-                    charge = callCharge
-                };
-                listOfCallDetailsForPerSecondPackages.Add(listOfCallDetails);
             }
+            totalCharge = Math.Round(totalCharge, 2);
             return totalCharge;
         }
-
-        public Bill GenerateMonthlyBill(string callersPhoneNumber)
-        {
+        
+        public Bill GenerateMonthlyBillForPerMinutePackage(string callersPhoneNumber)
+            {
             CreateCustomer customer = new CreateCustomer();
             Customer customerDetails = customer.GetCustomerDetailsForPhoneNumber(callersPhoneNumber);
             List<CallDetailRecords> callDetailRecords = GetCallRecords(callersPhoneNumber);

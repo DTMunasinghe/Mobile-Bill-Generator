@@ -219,6 +219,21 @@ namespace BillGenerator.Tests
         }
 
         [Test]
+        public void OnCalculateTotalChargePerSecond_WhenInputCallersNumberAndCallDetailRecordsListWithCallTimeBetweenPeakAndOffPeakHours_ShouldReturnCorrectTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0719633911";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectedTotalCharge = _sut.CalculateTotalChargePerSecond(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 175.27;
+
+            //Assert
+            Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
         public void OnGenerateMonthlyBill_WhenInputCustomersPhoneNumber_ShouldReturnMonthlyBillReport()
         {
             //Arrange
@@ -234,7 +249,7 @@ namespace BillGenerator.Tests
             double thirdCallCharge = 14.0;
             
             //Act
-            Bill billReport = _sut.GenerateMonthlyBill(callersPhoneNumber);
+            Bill billReport = _sut.GenerateMonthlyBillForPerMinutePackage(callersPhoneNumber);
 
             //Assert
             Assert.AreEqual(callersPhoneNumber, billReport.phoneNumber);
