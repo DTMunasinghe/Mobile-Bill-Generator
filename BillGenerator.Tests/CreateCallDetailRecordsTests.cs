@@ -20,7 +20,7 @@ namespace BillGenerator.Tests
         {
             //Arrange
             string filePath = "CDR.csv";
-            List<int> expected = new List<int> { 350, 245, 490, 1530, 156, 567, 193, 234, 123, 145, 359, 45, 489, 378 };
+            List<int> expected = new List<int> { 350, 378, 1530, 245, 490, 490, 359, 1530, 156, 567, 193, 234, 45, 123, 567, 145, 359, 45, 489, 378, 350, 234};
 
             //Act
             var actual = _sut.GetCallDurations(filePath);
@@ -45,23 +45,23 @@ namespace BillGenerator.Tests
             };
             expected.Add(callDetailRecords1);
 
-            DateTime.TryParse("12/01/2017 20:10:30", out DateTime dateAndTime2);
+            DateTime.TryParse("12/30/2017 07:14:57", out DateTime dateAndTime2);
             CallDetailRecords callDetailRecords2 = new CallDetailRecords()
             {
-                phoneNumberOfCallingParty = "0715535452",
-                phoneNumberOfCalledParty = "0724487106",
+                phoneNumberOfCallingParty = "0755670765",
+                phoneNumberOfCalledParty = "0771239087",
                 startingTimeOfTheCall = dateAndTime2,
-                callDuaration = 245
+                callDuaration = 378
             };
             expected.Add(callDetailRecords2);
 
-            DateTime.TryParse("12/01/2017 20:30:45", out DateTime dateAndTime3);
+            DateTime.TryParse("12/01/2017 21:40:14", out DateTime dateAndTime3);
             CallDetailRecords callDetailRecords3 = new CallDetailRecords()
             {
-                phoneNumberOfCallingParty = "0719633911",
-                phoneNumberOfCalledParty = "0719633979",
+                phoneNumberOfCallingParty = "0729622911",
+                phoneNumberOfCalledParty = "0729633979",
                 startingTimeOfTheCall = dateAndTime3,
-                callDuaration = 490
+                callDuaration = 1530
             };
             expected.Add(callDetailRecords3);
 
@@ -69,10 +69,10 @@ namespace BillGenerator.Tests
             var actual = _sut.GetCallDetailRecords();
 
             //Assert
-            Assert.AreEqual(expected[1].phoneNumberOfCallingParty, actual[1].phoneNumberOfCallingParty);
-            Assert.AreEqual(expected[1].phoneNumberOfCalledParty, actual[1].phoneNumberOfCalledParty);
-            Assert.AreEqual(expected[1].startingTimeOfTheCall, actual[1].startingTimeOfTheCall);
-            Assert.AreEqual(expected[1].callDuaration, actual[1].callDuaration);
+            Assert.AreEqual(expected[2].phoneNumberOfCallingParty, actual[2].phoneNumberOfCallingParty);
+            Assert.AreEqual(expected[2].phoneNumberOfCalledParty, actual[2].phoneNumberOfCalledParty);
+            Assert.AreEqual(expected[2].startingTimeOfTheCall, actual[2].startingTimeOfTheCall);
+            Assert.AreEqual(expected[2].callDuaration, actual[2].callDuaration);
         }
 
         [Test]
@@ -207,12 +207,12 @@ namespace BillGenerator.Tests
         public void OnCalculateTotalChargePerSecond_WhenInputCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
         {
             //Arrange
-            string callersPhoneNumber = "0775678765";
+            string callersPhoneNumber = "0755670765";
             List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
 
             //Act
             double expectdTotalCharge = _sut.CalculateTotalChargePerSecond(callersPhoneNumber, callDetailRecords);
-            double actualTotalCharge = 59.30;
+            double actualTotalCharge = 71.9;
 
             //Assert
             Assert.AreEqual(expectdTotalCharge, actualTotalCharge);
@@ -222,7 +222,7 @@ namespace BillGenerator.Tests
         public void OnCalculateTotalChargePerSecond_WhenInputCallersNumberAndCallDetailRecordsListWithCallTimeBetweenPeakAndOffPeakHours_ShouldReturnCorrectTotalCharge()
         {
             //Arrange
-            string callersPhoneNumber = "0719633911";
+            string callersPhoneNumber = "0729622911";
             List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
 
             //Act

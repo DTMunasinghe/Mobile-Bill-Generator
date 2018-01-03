@@ -21,7 +21,7 @@ namespace BillGenerator.Tests
         {
             //Arrange
             string filePath = "customerDetails.csv";
-            List<string> expected = new List<string> { "M.A Silva", "D.T Perera", "M.N Sahabandu" };
+            List<string> expected = new List<string> { "M.A Silva", "D.T Perera", "M.N Sahabandu", "V.C Munasinge", "T.C Wellappili"};
 
             //Act
             var actual = _sut.GetCustomersFullNames(filePath);

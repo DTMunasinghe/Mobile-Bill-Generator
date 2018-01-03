@@ -179,7 +179,8 @@ namespace BillGenerator
                     totalCharge = totalCharge + callCharge;
                 }
                 //off peak time
-                else if ((callStartTime >= peakEndingTime && callEndTime < peakStartingTime) || (callStartTime < peakStartingTime && callEndTime < peakStartingTime) || 
+                else if ((callStartTime >= peakEndingTime && callEndTime < peakStartingTime) || 
+                        (callStartTime < peakStartingTime && callEndTime < peakStartingTime) || 
                         (callStartTime >= peakEndingTime && callEndTime > peakEndingTime))
                 {
                     if (isLocalCall)
@@ -188,7 +189,7 @@ namespace BillGenerator
                     }
                     else
                     {
-                        callCharge = callDurationInMinutes * 5.0;
+                        callCharge = callDurationInMinutes * 5;
                     }
                     totalCharge = totalCharge + callCharge;
                 }
@@ -238,7 +239,7 @@ namespace BillGenerator
         }
         
         public Bill GenerateMonthlyBillForPerMinutePackage(string callersPhoneNumber)
-            {
+        {
             CreateCustomer customer = new CreateCustomer();
             Customer customerDetails = customer.GetCustomerDetailsForPhoneNumber(callersPhoneNumber);
             List<CallDetailRecords> callDetailRecords = GetCallRecords(callersPhoneNumber);
