@@ -8,8 +8,8 @@ namespace BillGenerator
     {
         private TimeSpan peakStartingTime = new TimeSpan(8, 0, 0);
         private TimeSpan peakEndingTime = new TimeSpan(20, 0, 0);
-        private List<ListOfCallDetails> listOfCallDetailsForPerMinutePackages = new List<ListOfCallDetails>();
-        private List<ListOfCallDetails> listOfCallDetailsForPerSecondPackages = new List<ListOfCallDetails>();
+        private List<ListOfCallDetails> listOfCallDetailsOfPackages = new List<ListOfCallDetails>();
+        //private List<ListOfCallDetails> listOfCallDetailsForPerSecondPackages = new List<ListOfCallDetails>();
 
         public List<int> GetCallDurations(string filePath)
         {
@@ -166,7 +166,6 @@ namespace BillGenerator
                     totalCharge = totalCharge + perMinuteCharge;
                     cdr.startingTimeOfTheCall = cdr.startingTimeOfTheCall.AddMinutes(1);
                 }
-
                 ListOfCallDetails listOfCallDetails = new ListOfCallDetails
                 {
                     startTime = cdr.startingTimeOfTheCall,
@@ -174,7 +173,7 @@ namespace BillGenerator
                     destinationNumber = cdr.phoneNumberOfCalledParty,
                     charge = callCharge
                 };
-                listOfCallDetailsForPerMinutePackages.Add(listOfCallDetails);
+                listOfCallDetailsOfPackages.Add(listOfCallDetails);
             }
             return totalCharge;
         }
@@ -213,6 +212,7 @@ namespace BillGenerator
                             perMinuteCharge = 3;
                         }
                         callCharge = callDurationInMinutes * perMinuteCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
                     else
                     {
@@ -225,7 +225,17 @@ namespace BillGenerator
                             perMinuteCharge = 5;
                         }
                         callCharge = callDurationInMinutes * perMinuteCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
+                    ListOfCallDetails listOfCallDetails = new ListOfCallDetails
+                    {
+                        startTime = cdr.startingTimeOfTheCall,
+                        durationInSeconds = cdr.callDuaration,
+                        destinationNumber = cdr.phoneNumberOfCalledParty,
+                        charge = callCharge
+                    };
+                    listOfCallDetailsOfPackages.Add(listOfCallDetails);
+
                     totalCharge = totalCharge + callCharge;
                 }
                 //off peak time
@@ -244,6 +254,7 @@ namespace BillGenerator
                             perMinuteCharge = 2;
                         }
                         callCharge = callDurationInMinutes * perMinuteCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
                     else
                     {
@@ -256,7 +267,17 @@ namespace BillGenerator
                             perMinuteCharge = 4;
                         }
                         callCharge = callDurationInMinutes * perMinuteCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
+                    ListOfCallDetails listOfCallDetails = new ListOfCallDetails
+                    {
+                        startTime = cdr.startingTimeOfTheCall,
+                        durationInSeconds = cdr.callDuaration,
+                        destinationNumber = cdr.phoneNumberOfCalledParty,
+                        charge = callCharge
+                    };
+                    listOfCallDetailsOfPackages.Add(listOfCallDetails);
+
                     totalCharge = totalCharge + callCharge;
                 }
                 //call start at peak time and call end at off peak time
@@ -280,6 +301,7 @@ namespace BillGenerator
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
                         callCharge = peakTimeCharge + offPeakTimeCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
                     else
                     {
@@ -296,7 +318,17 @@ namespace BillGenerator
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
                         callCharge = peakTimeCharge + offPeakTimeCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
+                    ListOfCallDetails listOfCallDetails = new ListOfCallDetails
+                    {
+                        startTime = cdr.startingTimeOfTheCall,
+                        durationInSeconds = cdr.callDuaration,
+                        destinationNumber = cdr.phoneNumberOfCalledParty,
+                        charge = callCharge
+                    };
+                    listOfCallDetailsOfPackages.Add(listOfCallDetails);
+
                     totalCharge = totalCharge + callCharge;
                 }
                 //call start at off peak time and call end at peak time
@@ -320,6 +352,7 @@ namespace BillGenerator
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
                         callCharge = offPeakTimeCharge + peakTimeCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
                     else
                     {
@@ -336,7 +369,17 @@ namespace BillGenerator
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
                         callCharge = offPeakTimeCharge + peakTimeCharge;
+                        callCharge = Math.Round(callCharge, 2);
                     }
+                    ListOfCallDetails listOfCallDetails = new ListOfCallDetails
+                    {
+                        startTime = cdr.startingTimeOfTheCall,
+                        durationInSeconds = cdr.callDuaration,
+                        destinationNumber = cdr.phoneNumberOfCalledParty,
+                        charge = callCharge
+                    };
+                    listOfCallDetailsOfPackages.Add(listOfCallDetails);
+
                     totalCharge = totalCharge + callCharge;
                 }
             }
@@ -350,7 +393,7 @@ namespace BillGenerator
             CreateCustomer customer = new CreateCustomer();
             Customer customerDetails = customer.GetCustomerDetailsForPhoneNumber(callersPhoneNumber);
             List<CallDetailRecords> callDetailRecords = GetCallRecords(callersPhoneNumber);
-            double totalCallCharges = CalculateTotalChargePerMinute(callersPhoneNumber, callDetailRecords);
+            double totalCallCharges = CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
             string packageCode = customer.GetPackageCode(callersPhoneNumber);
 
             if (packageCode == "A" || packageCode == "B")
@@ -363,6 +406,7 @@ namespace BillGenerator
             }
             double disCount = 0.0;
             double tax = (monthlyRental + totalCallCharges) * (20 / 100.0);
+            tax = Math.Round(tax, 2);
             double billAmount = totalCallCharges + monthlyRental + tax - disCount;
 
             Bill billReport = new Bill
@@ -375,7 +419,7 @@ namespace BillGenerator
                 tax = tax,
                 monthlyRental = monthlyRental,
                 billAmount = billAmount,
-                listOfCallRecords = listOfCallDetailsForPerMinutePackages
+                listOfCallRecords = listOfCallDetailsOfPackages
             };
             return billReport;
         }

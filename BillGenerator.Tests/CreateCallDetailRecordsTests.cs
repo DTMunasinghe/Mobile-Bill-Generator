@@ -263,7 +263,7 @@ namespace BillGenerator.Tests
             double firstCallCharge = 30.0;
             double secondCallCharge = 5.0;
             double thirdCallCharge = 14.0;
-            
+
             //Act
             Bill billReport = _sut.GenerateMonthlyBillForPerMinutePackage(callersPhoneNumber);
 
@@ -279,7 +279,6 @@ namespace BillGenerator.Tests
             Assert.AreEqual(secondCallCharge, billReport.listOfCallRecords[1].charge);
             Assert.AreEqual(thirdCallCharge, billReport.listOfCallRecords[2].charge);
         }
-
 
         [Test]
         public void OnCalculateTotalChargePerMinute_WhenInputPackageCCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
@@ -311,5 +310,35 @@ namespace BillGenerator.Tests
             Assert.AreEqual(expectdTotalCharge, actualTotalCharge);
         }
 
+        [Test]
+        public void OnGenerateMonthlyBill_WhenInputPackageDCustomersPhoneNumber_ShouldReturnMonthlyBillReport()
+        {
+            //Arrange
+            string callersPhoneNumber = "0771450065";
+            string address = "No.25A Temple Road Yakkala";
+            double totalCallCharges = 58.87;
+            double tax = 71.77;
+            double totalDiscount = 0.0;
+            double monthlyRental = 300.0;
+            double billAmount = 430.64;
+            double firstCallCharge = 25.2;
+            double secondCallCharge = 29.92;
+            double thirdCallCharge = 3.75;
+
+            //Act
+            Bill billReport = _sut.GenerateMonthlyBillForPerMinutePackage(callersPhoneNumber);
+
+            //Assert
+            Assert.AreEqual(callersPhoneNumber, billReport.phoneNumber);
+            Assert.AreEqual(address, billReport.billingAddress);
+            Assert.AreEqual(totalCallCharges, billReport.totalCallCharges);
+            Assert.AreEqual(totalDiscount, billReport.totalDiscount);
+            Assert.AreEqual(tax, billReport.tax);
+            Assert.AreEqual(monthlyRental, billReport.monthlyRental);
+            Assert.AreEqual(billAmount, billReport.billAmount);
+            Assert.AreEqual(firstCallCharge, billReport.listOfCallRecords[0].charge);
+            Assert.AreEqual(secondCallCharge, billReport.listOfCallRecords[1].charge);
+            Assert.AreEqual(thirdCallCharge, billReport.listOfCallRecords[2].charge);
+        }
     }
 }
