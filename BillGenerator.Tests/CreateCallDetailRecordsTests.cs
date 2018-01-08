@@ -20,7 +20,8 @@ namespace BillGenerator.Tests
         {
             //Arrange
             string filePath = "CDR.csv";
-            List<int> expected = new List<int> { 350, 378, 1530, 245, 490, 490, 359, 1530, 156, 567, 193, 234, 45, 123, 567, 145, 359, 45, 489, 378, 350, 234};
+            List<int> expected = new List<int> { 350, 378, 1530, 245, 490, 490, 359, 1530, 156, 567, 193, 234,
+                                                45, 123, 567, 145, 359, 45, 489, 378, 350, 234, 359, 45, 378, 378, 359, 45};
 
             //Act
             var actual = _sut.GetCallDurations(filePath);
@@ -278,5 +279,37 @@ namespace BillGenerator.Tests
             Assert.AreEqual(secondCallCharge, billReport.listOfCallRecords[1].charge);
             Assert.AreEqual(thirdCallCharge, billReport.listOfCallRecords[2].charge);
         }
+
+
+        [Test]
+        public void OnCalculateTotalChargePerMinute_WhenInputPackageCCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0728800765";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectedTotalCharge = _sut.CalculateTotalChargePerMinute(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 28.0;
+
+            //Assert
+            Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
+        public void OnCalculateTotalChargePerSecond_WhenInputPackageDCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0771450065";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectdTotalCharge = _sut.CalculateTotalChargePerSecond(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 58.87;
+
+            //Assert
+            Assert.AreEqual(expectdTotalCharge, actualTotalCharge);
+        }
+
     }
 }

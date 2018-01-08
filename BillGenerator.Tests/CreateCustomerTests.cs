@@ -9,7 +9,6 @@ namespace BillGenerator.Tests
     {
         private CreateCustomer _sut;
         
-
         [SetUp]
         public void Init()
         {
