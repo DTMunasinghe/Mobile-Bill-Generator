@@ -6,4 +6,3 @@ C:\Users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\Bi
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.AssemblyInfo.cs
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.dll
 C:\Users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.pdb
-C:\Users\dtm\source\repos\BillGenerator\BillGenerator\obj\Debug\netcoreapp2.0\BillGenerator.csprojResolveAssemblyReference.cache

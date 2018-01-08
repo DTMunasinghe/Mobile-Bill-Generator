@@ -267,9 +267,9 @@ namespace BillGenerator
             double totalCharge = 0;
             CreateCustomer createCustomer = new CreateCustomer();
 
-            int packageCode = createCustomer.GetPackageCode(customersNumber);
+            string packageCode = createCustomer.GetPackageCode(customersNumber);
 
-            if (packageCode == 1)
+            if (packageCode == "A")
             {
                 totalCharge = CalculateTotalChargePerMinute(customersNumber, callDetailRecords);
             }

@@ -21,7 +21,7 @@ namespace BillGenerator.Tests
         {
             //Arrange
             string filePath = "customerDetails.csv";
-            List<string> expected = new List<string> { "M.A Silva", "D.T Perera", "M.N Sahabandu", "V.C Munasinge", "T.C Wellappili"};
+            List<string> expected = new List<string> { "M.A Silva", "D.T Perera", "M.N Sahabandu", "V.C Munasinge", "T.C Wellappili", "M.N Perera", "W.A Appuhamu"};
 
             //Act
             var actual = _sut.GetCustomersFullNames(filePath);
@@ -42,7 +42,7 @@ namespace BillGenerator.Tests
                 fullName = "M.A Silva",
                 billingAddress = "No.101 Galle Road Dehiwala",
                 phoneNumber = "0719633911",
-                packageCode = 1,
+                packageCode = "A",
                 registeredDate = dateAndTime1
 
             };
@@ -54,7 +54,7 @@ namespace BillGenerator.Tests
                 fullName = "D.T Perera",
                 billingAddress = "No.123 Sumagi Mawatha Walgama",
                 phoneNumber = "0715535452",
-                packageCode = 1,
+                packageCode = "A",
                 registeredDate = dateAndTime2
 
             };
@@ -66,7 +66,7 @@ namespace BillGenerator.Tests
                 fullName = "M.N Sahabandu",
                 billingAddress = "No.201 Perera Road Nawalapitiya",
                 phoneNumber = "0775678765",
-                packageCode = 1,
+                packageCode = "A",
                 registeredDate = dateAndTime3
 
             };
@@ -95,7 +95,7 @@ namespace BillGenerator.Tests
                 fullName = "M.A Silva",
                 billingAddress = "No.101 Galle Road Dehiwala",
                 phoneNumber = "0719633911",
-                packageCode = 1,
+                packageCode = "A",
                 registeredDate = dateAndTime
             };
 
@@ -115,10 +115,10 @@ namespace BillGenerator.Tests
         {
             //Arrange
             string customersPhoneNumber = "0775678765";
-            int actualPackageCode = 1;
+            string actualPackageCode = "A";
 
             //Act
-            int expectedPackageCode = _sut.GetPackageCode(customersPhoneNumber);
+            string expectedPackageCode = _sut.GetPackageCode(customersPhoneNumber);
 
             //Assert
             Assert.AreEqual(expectedPackageCode, actualPackageCode);

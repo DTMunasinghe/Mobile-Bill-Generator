@@ -42,7 +42,7 @@ namespace BillGenerator
                         fullName = tokens[0],
                         billingAddress = tokens[1],
                         phoneNumber = tokens[2],
-                        packageCode = int.Parse(tokens[3]),
+                        packageCode = tokens[3],
                         registeredDate = dateAndTime
                     };
                     customers.Add(customer);
@@ -73,7 +73,7 @@ namespace BillGenerator
                                 fullName = tokens[0],
                                 billingAddress = tokens[1],
                                 phoneNumber = tokens[2],
-                                packageCode = int.Parse(tokens[3]),
+                                packageCode = tokens[3],
                                 registeredDate = dateAndTime
                             };
                         }
@@ -88,10 +88,10 @@ namespace BillGenerator
             return null;
         }
 
-        public int GetPackageCode(string customersPhoneNumber)
+        public string GetPackageCode(string customersPhoneNumber)
         {
             Customer customerDetails = GetCustomerDetailsForPhoneNumber(customersPhoneNumber);
-            int packageCode = customerDetails.packageCode;
+            string packageCode = customerDetails.packageCode;
 
             return packageCode;
         }

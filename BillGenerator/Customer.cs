@@ -12,7 +12,7 @@ namespace BillGenerator
 
         public string phoneNumber { get; set; }
 
-        public int packageCode { get; set; }
+        public string packageCode { get; set; }
 
         public DateTime registeredDate { get; set; }
 
