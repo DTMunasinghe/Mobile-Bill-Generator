@@ -9,7 +9,6 @@ namespace BillGenerator
         private TimeSpan peakStartingTime = new TimeSpan(8, 0, 0);
         private TimeSpan peakEndingTime = new TimeSpan(20, 0, 0);
         private List<ListOfCallDetails> listOfCallDetailsOfPackages = new List<ListOfCallDetails>();
-        //private List<ListOfCallDetails> listOfCallDetailsForPerSecondPackages = new List<ListOfCallDetails>();
 
         public List<int> GetCallDurations(string filePath)
         {
@@ -290,13 +289,11 @@ namespace BillGenerator
                     {
                         if (packageCode == "B")
                         {
-                            perMinuteChargePeakTime = 4;
-                            perMinuteChargeOffPeakTime = 3;
+                            perMinuteChargePeakTime = 4; perMinuteChargeOffPeakTime = 3;
                         }
                         else
                         {
-                            perMinuteChargePeakTime = 3;
-                            perMinuteChargeOffPeakTime = 2;
+                            perMinuteChargePeakTime = 3; perMinuteChargeOffPeakTime = 2;
                         }
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
@@ -307,13 +304,11 @@ namespace BillGenerator
                     {
                         if (packageCode == "B")
                         {
-                            perMinuteChargePeakTime = 6;
-                            perMinuteChargeOffPeakTime = 5;
+                            perMinuteChargePeakTime = 6; perMinuteChargeOffPeakTime = 5;
                         }
                         else
                         {
-                            perMinuteChargePeakTime = 5;
-                            perMinuteChargeOffPeakTime = 4;
+                            perMinuteChargePeakTime = 5; perMinuteChargeOffPeakTime = 4;
                         }
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
@@ -341,13 +336,11 @@ namespace BillGenerator
                     {
                         if (packageCode == "B")
                         {
-                            perMinuteChargePeakTime = 4;
-                            perMinuteChargeOffPeakTime = 3;
+                            perMinuteChargePeakTime = 4; perMinuteChargeOffPeakTime = 3;
                         }
                         else
                         {
-                            perMinuteChargePeakTime = 3;
-                            perMinuteChargeOffPeakTime = 2;
+                            perMinuteChargePeakTime = 3; perMinuteChargeOffPeakTime = 2;
                         }
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
@@ -358,13 +351,11 @@ namespace BillGenerator
                     {
                         if (packageCode == "B")
                         {
-                            perMinuteChargePeakTime = 6;
-                            perMinuteChargeOffPeakTime = 5;
+                            perMinuteChargePeakTime = 6; perMinuteChargeOffPeakTime = 5;
                         }
                         else
                         {
-                            perMinuteChargePeakTime = 5;
-                            perMinuteChargeOffPeakTime = 4;
+                            perMinuteChargePeakTime = 5; perMinuteChargeOffPeakTime = 4;
                         }
                         offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
                         peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;

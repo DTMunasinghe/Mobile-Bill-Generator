@@ -30,6 +30,45 @@ namespace BillGenerator.Tests
         }
 
         [Test]
+        public void OnCheckPhoneNumber_WhenInputValidPhoneNumber_ShouldReturnTrue()
+        {
+            //Arrange
+            string phoneNumber = "0719633911";
+
+            //Act
+            bool actual = _sut.CheckPhoneNumber(phoneNumber);
+
+            //Assert
+            Assert.IsTrue(actual);
+        }
+
+        [Test]
+        public void OnCheckPhoneNumber_WhenInputValidPhoneNumberWithLessThanTenDigits_ShouldReturnTrue()
+        {
+            //Arrange
+            string phoneNumber = "071963391";
+
+            //Act
+            bool actual = _sut.CheckPhoneNumber(phoneNumber);
+
+            //Assert
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
+        public void OnCheckPhoneNumber_WhenInputValidPhoneNumberWithFirstNumberNotEqualToZero_ShouldReturnTrue()
+        {
+            //Arrange
+            string phoneNumber = "1719633911";
+
+            //Act
+            bool actual = _sut.CheckPhoneNumber(phoneNumber);
+
+            //Assert
+            Assert.IsFalse(actual);
+        }
+
+        [Test]
         public void OnGetCustomers_WhenInputCustomerObjectValues_ShouldReturnSameValuesOfTheCorrespondingObject()
         {
             //Arrange

@@ -51,6 +51,18 @@ namespace BillGenerator
             }
         }
 
+        public bool CheckPhoneNumber(string phoneNumber)
+        {
+            if (phoneNumber.Substring(0, 1) == "0" && phoneNumber.Length == 10)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
         public Customer GetCustomerDetailsForPhoneNumber(string phoneNumber)
         {
             string fileName = "customerDetails.csv";
@@ -90,10 +102,17 @@ namespace BillGenerator
 
         public string GetPackageCode(string customersPhoneNumber)
         {
-            Customer customerDetails = GetCustomerDetailsForPhoneNumber(customersPhoneNumber);
-            string packageCode = customerDetails.packageCode;
-
-            return packageCode;
+            if (CheckPhoneNumber(customersPhoneNumber))
+            {
+                Customer customerDetails = GetCustomerDetailsForPhoneNumber(customersPhoneNumber);
+                string packageCode = customerDetails.packageCode;
+                return packageCode;
+            }
+            else
+            {
+                Console.WriteLine("Wrong Phone Number");
+                return null;
+            }
         }
     }
 }
