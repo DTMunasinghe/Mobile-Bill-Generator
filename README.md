@@ -1,4 +1,4 @@
-# Mobile billing kata
+# Mobile Bill Generator
 
 ### Introduction:
 
