@@ -6,9 +6,22 @@ namespace BillGenerator
 {
     public class CreateCallDetailRecords
     {
-        private TimeSpan peakStartingTime = new TimeSpan(8, 0, 0);
-        private TimeSpan peakEndingTime = new TimeSpan(20, 0, 0);
-        private List<ListOfCallDetails> listOfCallDetailsOfPackages = new List<ListOfCallDetails>();
+        private TimeSpan peakStartingTime;
+        private TimeSpan peakEndingTime;
+        private List<ListOfCallDetails> listOfCallDetailsOfPackages;
+
+        public CreateCallDetailRecords()
+        {
+            peakStartingTime = new TimeSpan(8, 0, 0);
+            peakEndingTime = new TimeSpan(20, 0, 0);
+            listOfCallDetailsOfPackages = new List<ListOfCallDetails>();
+        }
+
+        public void SetPeakAndOffPeakHours(TimeSpan startingTime, TimeSpan EndingTime)
+        {
+            peakStartingTime = startingTime;
+            peakEndingTime = EndingTime;
+        }
 
         public List<int> GetCallDurations(string filePath)
         {
@@ -422,8 +435,14 @@ namespace BillGenerator
 
             string packageCode = createCustomer.GetPackageCode(customersNumber);
             //per minute packages
-            if (packageCode == "A" || packageCode == "C")
+            if (packageCode == "A")
             {
+                SetPeakAndOffPeakHours(new TimeSpan(10, 0, 0), new TimeSpan(18, 0, 0));
+                totalCharge = CalculateTotalChargePerMinute(customersNumber, callDetailRecords);
+            }
+            else if (packageCode == "C")
+            {
+                SetPeakAndOffPeakHours(new TimeSpan(9, 0, 0), new TimeSpan(18, 0, 0));
                 totalCharge = CalculateTotalChargePerMinute(customersNumber, callDetailRecords);
             }
             else

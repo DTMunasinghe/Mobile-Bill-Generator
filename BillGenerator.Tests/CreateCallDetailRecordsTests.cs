@@ -255,12 +255,12 @@ namespace BillGenerator.Tests
             //Arrange
             string callersPhoneNumber = "0775678765";
             string address = "No.201 Perera Road Nawalapitiya";
-            double totalCallCharges = 49.0;
-            double tax = 29.8;
+            double totalCallCharges = 43.0;
+            double tax = 28.6;
             double totalDiscount = 0.0;
             double monthlyRental = 100.0;
-            double billAmount = 178.8;
-            double firstCallCharge = 30.0;
+            double billAmount = 171.6;
+            double firstCallCharge = 24.0;
             double secondCallCharge = 5.0;
             double thirdCallCharge = 14.0;
 
@@ -339,6 +339,36 @@ namespace BillGenerator.Tests
             Assert.AreEqual(firstCallCharge, billReport.listOfCallRecords[0].charge);
             Assert.AreEqual(secondCallCharge, billReport.listOfCallRecords[1].charge);
             Assert.AreEqual(thirdCallCharge, billReport.listOfCallRecords[2].charge);
+        }
+
+        [Test]
+        public void OnCalculateTotalChargePerMinute_WhennputPackageACallersNumberAndCallDetailRecordsListAfterPackageAPeakAndOffPeakHoursAreChanged_ShouldReturnTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0775678765";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 43.0;
+
+            //Assert
+            Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
+        public void OnCalculateTotalChargePerMinute_WhennputPackageACallersNumberAndCallDetailRecordsListAfterPackageCPeakAndOffPeakHoursAreChanged_ShouldReturnTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0728800765";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 22.0;
+
+            //Assert
+            Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
         }
     }
 }
