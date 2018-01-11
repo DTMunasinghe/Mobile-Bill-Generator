@@ -259,13 +259,22 @@ namespace BillGenerator
                     {
                         if (packageCode == "B")
                         {
-                            perMinuteCharge = 3;
+                            if (cdr.callDuaration >= 60)
+                            {
+                                perMinuteCharge = 3;
+                                callCharge = callDurationInMinutes * perMinuteCharge - perMinuteCharge;
+                            }
+                            else
+                            {
+                                perMinuteCharge = 0;
+                                callCharge = callDurationInMinutes * perMinuteCharge;
+                            }
                         }
                         else
                         {
                             perMinuteCharge = 2;
+                            callCharge = callDurationInMinutes * perMinuteCharge;
                         }
-                        callCharge = callDurationInMinutes * perMinuteCharge;
                         callCharge = Math.Round(callCharge, 2);
                     }
                     else
@@ -349,15 +358,28 @@ namespace BillGenerator
                     {
                         if (packageCode == "B")
                         {
-                            perMinuteChargePeakTime = 4; perMinuteChargeOffPeakTime = 3;
+                            if (cdr.callDuaration >= 60)
+                            {
+                                perMinuteChargePeakTime = 4; perMinuteChargeOffPeakTime = 3;
+                                offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime - perMinuteChargeOffPeakTime;
+                                peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
+                                callCharge = offPeakTimeCharge + peakTimeCharge;
+                            }
+                            else
+                            {
+                                perMinuteChargePeakTime = 4; perMinuteChargeOffPeakTime = 0;
+                                offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
+                                peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
+                                callCharge = offPeakTimeCharge + peakTimeCharge;
+                            }
                         }
                         else
                         {
                             perMinuteChargePeakTime = 3; perMinuteChargeOffPeakTime = 2;
+                            offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
+                            peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
+                            callCharge = offPeakTimeCharge + peakTimeCharge;
                         }
-                        offPeakTimeCharge = (callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
-                        peakTimeCharge = (callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
-                        callCharge = offPeakTimeCharge + peakTimeCharge;
                         callCharge = Math.Round(callCharge, 2);
                     }
                     else
@@ -391,7 +413,7 @@ namespace BillGenerator
             return totalCharge;
         }
         
-        public Bill GenerateMonthlyBillForPerMinutePackage(string callersPhoneNumber)
+        public Bill GenerateMonthlyBill(string callersPhoneNumber)
         {
             double monthlyRental = 0;
             CreateCustomer customer = new CreateCustomer();
@@ -434,7 +456,7 @@ namespace BillGenerator
             CreateCustomer createCustomer = new CreateCustomer();
 
             string packageCode = createCustomer.GetPackageCode(customersNumber);
-            //per minute packages
+
             if (packageCode == "A")
             {
                 SetPeakAndOffPeakHours(new TimeSpan(10, 0, 0), new TimeSpan(18, 0, 0));

@@ -228,7 +228,7 @@ namespace BillGenerator.Tests
 
             //Act
             double expectedTotalCharge = _sut.CalculateTotalChargePerSecond(callersPhoneNumber, callDetailRecords);
-            double actualTotalCharge = 175.27;
+            double actualTotalCharge = 163.27;
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
@@ -243,7 +243,7 @@ namespace BillGenerator.Tests
 
             //Act
             double expectedTotalCharge = _sut.CalculateTotalCharge(customersNumber, callDetailRecords);
-            double actualTotalCharge = 175.27;
+            double actualTotalCharge = 163.27;
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
@@ -265,7 +265,7 @@ namespace BillGenerator.Tests
             double thirdCallCharge = 14.0;
 
             //Act
-            Bill billReport = _sut.GenerateMonthlyBillForPerMinutePackage(callersPhoneNumber);
+            Bill billReport = _sut.GenerateMonthlyBill(callersPhoneNumber);
 
             //Assert
             Assert.AreEqual(callersPhoneNumber, billReport.phoneNumber);
@@ -326,7 +326,7 @@ namespace BillGenerator.Tests
             double thirdCallCharge = 3.75;
 
             //Act
-            Bill billReport = _sut.GenerateMonthlyBillForPerMinutePackage(callersPhoneNumber);
+            Bill billReport = _sut.GenerateMonthlyBill(callersPhoneNumber);
 
             //Assert
             Assert.AreEqual(callersPhoneNumber, billReport.phoneNumber);
@@ -342,7 +342,7 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnCalculateTotalChargePerMinute_WhennputPackageACallersNumberAndCallDetailRecordsListAfterPackageAPeakAndOffPeakHoursAreChanged_ShouldReturnTotalCharge()
+        public void OnCalculateTotalCharge_WhennputPackageACallersNumberAndCallDetailRecordsListAfterPackageAPeakAndOffPeakHoursAreChanged_ShouldReturnTotalCharge()
         {
             //Arrange
             string callersPhoneNumber = "0775678765";
@@ -357,7 +357,7 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnCalculateTotalChargePerMinute_WhennputPackageACallersNumberAndCallDetailRecordsListAfterPackageCPeakAndOffPeakHoursAreChanged_ShouldReturnTotalCharge()
+        public void OnCalculateTotalCharge_WhennputPackageACallersNumberAndCallDetailRecordsListAfterPackageCPeakAndOffPeakHoursAreChanged_ShouldReturnTotalCharge()
         {
             //Arrange
             string callersPhoneNumber = "0728800765";
@@ -366,6 +366,21 @@ namespace BillGenerator.Tests
             //Act
             double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
             double actualTotalCharge = 22.0;
+
+            //Assert
+            Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
+        public void OnCalculateTotalCharge_WhenFirstMinuteOfAllLocalOffPeakCallsAreFreeForPackageBAndInputCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0729622911";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 163.27;
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
