@@ -198,7 +198,7 @@ namespace BillGenerator.Tests
 
             //Act
             double expectedTotalCharge = _sut.CalculateTotalChargePerMinute(callersPhoneNumber, callDetailRecords);
-            double actualTotalCharge = 127.0;
+            double actualTotalCharge = 130.0;
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
