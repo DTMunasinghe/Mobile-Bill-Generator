@@ -137,12 +137,21 @@ namespace BillGenerator
                         if (packageCode == "A")
                         {
                             perMinuteCharge = 3;
+                            callCharge = durationInMinutes * perMinuteCharge;
                         }
                         else
                         {
-                            perMinuteCharge = 2;
+                            if (cdr.callDuaration >= 60)
+                            {
+                                perMinuteCharge = 2;
+                                callCharge = durationInMinutes * perMinuteCharge - perMinuteCharge;
+                            }
+                            else
+                            {
+                                perMinuteCharge = 0;
+                                callCharge = durationInMinutes * perMinuteCharge;
+                            }
                         }
-                        callCharge = durationInMinutes * perMinuteCharge;
                     }
                     else
                     {
@@ -177,12 +186,21 @@ namespace BillGenerator
                         if (packageCode == "A")
                         {
                             perMinuteCharge = 2;
+                            callCharge = durationInMinutes * perMinuteCharge;
                         }
                         else
                         {
-                            perMinuteCharge = 1;
-                        }
-                        callCharge = durationInMinutes * perMinuteCharge;
+                            if (cdr.callDuaration >= 60)
+                            {
+                                perMinuteCharge = 1;
+                                callCharge = durationInMinutes * perMinuteCharge - perMinuteCharge;
+                            }
+                            else
+                            {
+                                perMinuteCharge = 0;
+                                callCharge = durationInMinutes * perMinuteCharge;
+                            }
+                        } 
                     }
                     else
                     {
@@ -218,14 +236,24 @@ namespace BillGenerator
                         if (packageCode == "A")
                         {
                             perMinuteChargePeakTime = 3; perMinuteChargeOffPeakTime = 2;
+                            peakTimeCharge = Math.Ceiling(callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
+                            offPeakTimeCharge = Math.Ceiling(callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
+                            callCharge = peakTimeCharge + offPeakTimeCharge;
                         }
                         else
                         {
-                            perMinuteChargePeakTime = 2; perMinuteChargeOffPeakTime = 1;
+                            if (cdr.callDuaration >= 60)
+                            {
+                                perMinuteChargePeakTime = 2; perMinuteChargeOffPeakTime = 1;
+                                peakTimeCharge = Math.Ceiling(callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime - perMinuteChargePeakTime;
+                                offPeakTimeCharge = Math.Ceiling(callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
+                                callCharge = peakTimeCharge + offPeakTimeCharge;
+                            }
+                            else
+                            {
+                                callCharge = 0;
+                            }
                         }
-                        peakTimeCharge = Math.Ceiling(callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
-                        offPeakTimeCharge = Math.Ceiling(callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
-                        callCharge = peakTimeCharge + offPeakTimeCharge;
                     }
                     else
                     {
@@ -263,14 +291,24 @@ namespace BillGenerator
                         if (packageCode == "A")
                         {
                             perMinuteChargePeakTime = 3; perMinuteChargeOffPeakTime = 2;
+                            peakTimeCharge = Math.Ceiling(callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
+                            offPeakTimeCharge = Math.Ceiling(callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
+                            callCharge = peakTimeCharge + offPeakTimeCharge;
                         }
                         else
                         {
-                            perMinuteChargePeakTime = 2; perMinuteChargeOffPeakTime = 1;
+                            if (cdr.callDuaration >= 60)
+                            {
+                                perMinuteChargePeakTime = 2; perMinuteChargeOffPeakTime = 1;
+                                peakTimeCharge = Math.Ceiling(callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
+                                offPeakTimeCharge = Math.Ceiling(callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime - perMinuteChargeOffPeakTime;
+                                callCharge = peakTimeCharge + offPeakTimeCharge;
+                            }
+                            else
+                            {
+                                callCharge = 0;
+                            }
                         }
-                        peakTimeCharge = Math.Ceiling(callTimeInPeakTime.TotalSeconds / 60.0) * perMinuteChargePeakTime;
-                        offPeakTimeCharge = Math.Ceiling(callTimeInOffPeakTime.TotalSeconds / 60.0) * perMinuteChargeOffPeakTime;
-                        callCharge = peakTimeCharge + offPeakTimeCharge;
                     }
                     else
                     {
@@ -523,7 +561,26 @@ namespace BillGenerator
             totalCharge = Math.Round(totalCharge, 2);
             return totalCharge;
         }
-        
+
+        public double CalculateDiscount(string callersPhoneNumber)
+        {
+            CreateCustomer customer = new CreateCustomer();
+            double discount = 0;
+            string packageCode = customer.GetPackageCode(callersPhoneNumber);
+            List<CallDetailRecords> callDetailRecords = GetCallRecords(callersPhoneNumber);
+            double totalCharge = CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            
+            if (totalCharge > 1000.0 & (packageCode == "A" || packageCode == "B"))
+            {
+                discount = totalCharge * (40 / 100.0);
+            }
+            else
+            {
+                discount = 0;
+            }
+            return discount;
+        }
+
         public Bill GenerateMonthlyBill(string callersPhoneNumber)
         {
             double monthlyRental = 0;
@@ -541,7 +598,7 @@ namespace BillGenerator
             {
                 monthlyRental = 300;
             }
-            double disCount = 0.0;
+            double disCount = CalculateDiscount(callersPhoneNumber);
             double tax = (monthlyRental + totalCallCharges) * (20 / 100.0);
             tax = Math.Round(tax, 2);
             double billAmount = totalCallCharges + monthlyRental + tax - disCount;

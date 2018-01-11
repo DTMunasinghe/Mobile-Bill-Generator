@@ -289,7 +289,7 @@ namespace BillGenerator.Tests
 
             //Act
             double expectedTotalCharge = _sut.CalculateTotalChargePerMinute(callersPhoneNumber, callDetailRecords);
-            double actualTotalCharge = 28.0;
+            double actualTotalCharge = 27.0;
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
@@ -365,7 +365,7 @@ namespace BillGenerator.Tests
 
             //Act
             double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
-            double actualTotalCharge = 22.0;
+            double actualTotalCharge = 21.0;
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
@@ -384,6 +384,35 @@ namespace BillGenerator.Tests
 
             //Assert
             Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
+        public void OnCalculateTotalCharge_WhenFirstMinuteOfAllLocalCallsAreFreeForPackageCAndInputCallersNumberAndCallDetailRecordsList_ShouldReturnTotalCharge()
+        {
+            //Arrange
+            string callersPhoneNumber = "0728800765";
+            List<CallDetailRecords> callDetailRecords = _sut.GetCallRecords(callersPhoneNumber);
+
+            //Act
+            double expectedTotalCharge = _sut.CalculateTotalCharge(callersPhoneNumber, callDetailRecords);
+            double actualTotalCharge = 21.0;
+
+            //Assert
+            Assert.AreEqual(expectedTotalCharge, actualTotalCharge);
+        }
+
+        [Test]
+        public void OnCalculateDiscount_WhenInputCallersNumber_ShouldReturnTheCorrectDiscount()
+        {
+            //Arrange
+            string callersPhoneNumber = "0719633911";
+
+            //Act
+            double expectedDiscount = _sut.CalculateDiscount(callersPhoneNumber);
+            double actualDiscount = 0;
+
+            //Assert
+            Assert.AreEqual(expectedDiscount, actualDiscount);
         }
     }
 }
