@@ -414,5 +414,66 @@ namespace BillGenerator.Tests
             //Assert
             Assert.AreEqual(expectedDiscount, actualDiscount);
         }
+
+        [Test]
+        public void OnGenerate_WhenInputCustomersList_ShouldReturnBills()
+        {
+            //Arrange
+            List<Customer> customers = new List<Customer>();
+
+            DateTime.TryParse("10/25/2017 14:01:16", out DateTime dateAndTime1);
+            Customer customer1 = new Customer()
+            {
+                fullName = "M.A Silva",
+                billingAddress = "No.101 Galle Road Dehiwala",
+                phoneNumber = "0719633911",
+                packageCode = "A",
+                registeredDate = dateAndTime1
+
+            };
+            customers.Add(customer1);
+
+            DateTime.TryParse("04/17/2017 10:25:34", out DateTime dateAndTime2);
+            Customer customer2 = new Customer()
+            {
+                fullName = "D.T Perera",
+                billingAddress = "No.123 Sumagi Mawatha Walgama",
+                phoneNumber = "0715535452",
+                packageCode = "A",
+                registeredDate = dateAndTime2
+
+            };
+            customers.Add(customer2);
+
+            DateTime.TryParse("09/10/2017 15:14:19", out DateTime dateAndTime3);
+            Customer customer3 = new Customer()
+            {
+                fullName = "M.N Sahabandu",
+                billingAddress = "No.201 Perera Road Nawalapitiya",
+                phoneNumber = "0775678765",
+                packageCode = "A",
+                registeredDate = dateAndTime3
+
+            };
+            customers.Add(customer3);
+
+            double customer1totalCallCharges = 122.0;
+            double customer2totalCallCharges = 84.0;
+            double customer3totalCallCharges = 43.0;
+
+            //Act
+            List <Bill> actualBills = _sut.Generate(customers);
+
+            //Assert
+            Assert.AreEqual(customer1.fullName, actualBills[0].fullName);
+            Assert.AreEqual(customer2.fullName, actualBills[1].fullName);
+            Assert.AreEqual(customer3.fullName, actualBills[2].fullName);
+            Assert.AreEqual(customer1.phoneNumber, actualBills[0].phoneNumber);
+            Assert.AreEqual(customer2.phoneNumber, actualBills[1].phoneNumber);
+            Assert.AreEqual(customer3.phoneNumber, actualBills[2].phoneNumber);
+            Assert.AreEqual(customer1totalCallCharges, actualBills[0].totalCallCharges);
+            Assert.AreEqual(customer2totalCallCharges, actualBills[1].totalCallCharges);
+            Assert.AreEqual(customer3totalCallCharges, actualBills[2].totalCallCharges);
+        }
     }
 }

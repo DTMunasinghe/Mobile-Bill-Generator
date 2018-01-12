@@ -618,6 +618,18 @@ namespace BillGenerator
             return billReport;
         }
 
+        public List<Bill> Generate(List<Customer> customers)
+        {
+            List<Bill> bills = new List<Bill>();
+
+            foreach (Customer cus in customers)
+            {
+                Bill bill = GenerateMonthlyBill(cus.phoneNumber);
+                bills.Add(bill);
+            }
+            return bills;
+        }
+
         public double CalculateTotalCharge(string customersNumber, List<CallDetailRecords> callDetailRecords)
         {
             double totalCharge = 0;
