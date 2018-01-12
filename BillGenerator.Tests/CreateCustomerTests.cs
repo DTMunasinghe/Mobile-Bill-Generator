@@ -43,7 +43,7 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnCheckPhoneNumber_WhenInputValidPhoneNumberWithLessThanTenDigits_ShouldReturnTrue()
+        public void OnCheckPhoneNumber_WhenInputValidPhoneNumberWithLessThanTenDigits_ShouldReturnFalse()
         {
             //Arrange
             string phoneNumber = "071963391";
@@ -56,7 +56,7 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnCheckPhoneNumber_WhenInputValidPhoneNumberWithFirstNumberNotEqualToZero_ShouldReturnTrue()
+        public void OnCheckPhoneNumber_WhenInputValidPhoneNumberWithFirstNumberNotEqualToZero_ShouldReturnFalse()
         {
             //Arrange
             string phoneNumber = "1719633911";
@@ -69,7 +69,7 @@ namespace BillGenerator.Tests
         }
 
         [Test]
-        public void OnGetCustomers_WhenInputCustomerObjectValues_ShouldReturnSameValuesOfTheCorrespondingObject()
+        public void OnGetCustomers_WhenInputCustomers_ShouldReturnCustomerDetails()
         {
             //Arrange
             List<Customer> expected = new List<Customer>();
